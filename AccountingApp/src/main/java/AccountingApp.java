@@ -47,8 +47,8 @@ public class AccountingApp {
         System.out.print("Amount: ");
         double amount = Double.parseDouble(scanner.nextLine());
 
-        if (!isDeposit) {
-            amount = -Math.abs(amount);}
+        if (!isDeposit) { //so intellij
+            amount = -Math.abs(amount);} //unary op
 
         Transaction printAll = new Transaction(LocalDate.now(), LocalTime.now(), desc, vendor, amount);
         saveTransaction(printAll);
@@ -69,7 +69,7 @@ public class AccountingApp {
         }
     }
 
-    private static List<Transaction> loadTransactions() {
+    private static List<Transaction> loadTransactions() { // to read
 
         List<Transaction> list = new ArrayList<>();
 
@@ -89,8 +89,8 @@ public class AccountingApp {
 
     private static void showLedger() {
 
-        List<Transaction> all = loadTransactions();
-
+        List<Transaction> all = loadTransactions(); //csv
+        // for each T use the getdate method
         all.sort(Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getTime).reversed());
 
         while (true) {
@@ -119,7 +119,7 @@ public class AccountingApp {
         }
     }
 
-    private static void printTransactions(List<Transaction> list) {
+    private static void printTransactions(List<Transaction> list) { //just prints list of transactions toString
 
         if (list.isEmpty()) {
             System.out.println("No transactions found.");
