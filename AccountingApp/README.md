@@ -6,7 +6,9 @@ This is a simple command-line accounting ledger built in Java. It allows users t
 
 ## 🌱 Project Purpose & Background
 
-This project was built to for Year Up United's Learn to Code Academy to simulate the experience of using a basic accounting ledger. From the start, the goal was to create a console-based interface that feels intuitive, fast, and transparent — no hidden logic, just smart features that get out of the way.
+This project was built for Year Up United's Learn to Code Academy Capstone (1 of 3) to simulate the experience of using a basic accounting ledger. 
+From the start, the goal was to create a console-based interface that feels intuitive, fast, and transparent
+no hidden logic, just a straight to the point working application.
 
 The system enforces good accounting practices automatically:
 - Payments (debits) are always stored as negative values

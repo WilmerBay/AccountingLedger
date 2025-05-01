@@ -16,7 +16,7 @@ public class AccountingApp {
 
             System.out.println("\n Home Screen ");
 
-            System.out.println( //paulo told me this is prettier
+            System.out.println( //paulo mentioned readability, adjusted to seperate the line to 4 lines for readability
                     "D) Add Deposit\n" +
                     "P) Make Payment\n" +
                     "L) Go to Ledger\n" +
@@ -49,16 +49,17 @@ public class AccountingApp {
         System.out.print("Amount: ");
         double amount = Double.parseDouble(scanner.nextLine());
 
-        if (!isDeposit) { //so paulo for the else statement: avoiding user placing a negative deposit
+        if (!isDeposit) { //so paulo for the else, this is to avoid user placing a negative deposit
             amount = -Math.abs(amount);}
         else {
             amount = Math.abs(amount);}
 
         Transaction printAll = new Transaction(LocalDate.now(), LocalTime.now(), desc, vendor, amount);
 
+        System.out.println("Saved: " + printAll);
+
         saveTransaction(printAll);
 
-        System.out.println("Saved: " + printAll);
     }
 
     private static void saveTransaction(Transaction transaction) {
@@ -74,7 +75,7 @@ public class AccountingApp {
         }
     }
 
-    private static List<Transaction> loadTransactions() {
+    private static List<Transaction> readTransactions() {
 
         List<Transaction> list = new ArrayList<>();
 
@@ -94,16 +95,23 @@ public class AccountingApp {
 
     private static void showLedger() {
 
-        List<Transaction> all = loadTransactions();
+        List<Transaction> all = readTransactions();
 
-        all.sort(Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getTime).reversed());
+        all.sort(Comparator
+                .comparing(Transaction::getDate)
+                .thenComparing(Transaction::getTime)
+                .reversed());
 
         while (true) {
 
             System.out.println("\nLedger");
 
             System.out.println(
-                    "A) All\n" + "D) Deposits\nP) Payments\nR) Reports\nH) Home");
+                    "A) All\n" +
+                    "D) Deposits\n" +
+                    "P) Payments\nR) " +
+                    "Reports\nH) " +
+                    "Home");
 
             String input = scanner.nextLine().trim().toUpperCase();
 
@@ -125,10 +133,9 @@ public class AccountingApp {
 
         if (list.isEmpty()) {
             System.out.println("No transactions found.");
-
         } else {
-            for (Transaction t : list) {
-                System.out.println(t);
+            for (Transaction transaction : list) {
+                System.out.println(transaction);
             }
         }
     }
@@ -139,7 +146,13 @@ public class AccountingApp {
 
         while (true) {
 
-        System.out.println("1) Month to Date\n2) Previous Month\n3) Year to Date\n4) Previous Year\n5) Search by Vendor\n0) Back");
+        System.out.println(
+                        "1) Month to Date\n" +
+                        "2) Previous Month\n" +
+                        "3) Year to Date\n" +
+                        "4) Previous Year\n" +
+                        "5) Search by Vendor\n" +
+                        "0) Back");
 
         String input = scanner.nextLine();
 
@@ -149,9 +162,7 @@ public class AccountingApp {
 
             case "1" ->
                     printTransactions(list.stream().filter(t -> t.getDate().getMonth() == now.getMonth() && t.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
-
             case "2" -> {
-
                 LocalDate prevMonth = now.minusMonths(1);
 
                 printTransactions(list.stream().filter(t -> t.getDate().getMonth() == prevMonth.getMonth() && t.getDate().getYear() == prevMonth.getYear()).collect(Collectors.toList()));
