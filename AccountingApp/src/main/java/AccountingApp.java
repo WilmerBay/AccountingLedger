@@ -15,20 +15,22 @@ public class AccountingApp {
         while (true) {
 
             System.out.println("\n Home Screen ");
-            System.out.println("D) Add Deposit\nP) Make Payment\nL) Ledger\nX) Exit");
+
+            System.out.println( //paulo told me this is prettier
+                    "D) Add Deposit\n" +
+                    "P) Make Payment\n" +
+                    "L) Go to Ledger\n" +
+                    "X) Close Program");
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
             switch (choice) { //dont need break; with arrows - Default is an easier way to keep from user entering something wrong in a while loop to me to keep it user proof
 
                 case "D" -> addTransaction(true);
-
                 case "P" -> addTransaction(false);
-
                 case "L" -> showLedger();
-
                 case "X" -> {
-                    System.out.println("Exiting.");
+                    System.out.println("Closing Program.");
                     return;
                 }
                 default -> System.out.println("Invalid input.");
@@ -47,20 +49,23 @@ public class AccountingApp {
         System.out.print("Amount: ");
         double amount = Double.parseDouble(scanner.nextLine());
 
-        if (!isDeposit) { //so intellij
-            amount = -Math.abs(amount);} //unary op
+        if (!isDeposit) { //so paulo for the else statement: avoiding user placing a negative deposit
+            amount = -Math.abs(amount);}
+        else {
+            amount = Math.abs(amount);}
 
         Transaction printAll = new Transaction(LocalDate.now(), LocalTime.now(), desc, vendor, amount);
+
         saveTransaction(printAll);
 
         System.out.println("Saved: " + printAll);
     }
 
-    private static void saveTransaction(Transaction t) {
+    private static void saveTransaction(Transaction transaction) {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE, true))) {
 
-            writer.write(t.toCSV());
+            writer.write(transaction.toCSV());
 
             writer.newLine();
 
@@ -69,7 +74,7 @@ public class AccountingApp {
         }
     }
 
-    private static List<Transaction> loadTransactions() { // to read
+    private static List<Transaction> loadTransactions() {
 
         List<Transaction> list = new ArrayList<>();
 
@@ -89,28 +94,25 @@ public class AccountingApp {
 
     private static void showLedger() {
 
-        List<Transaction> all = loadTransactions(); //csv
-        // for each T use the getdate method
+        List<Transaction> all = loadTransactions();
+
         all.sort(Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getTime).reversed());
 
         while (true) {
 
             System.out.println("\nLedger");
 
-            System.out.println("A) All\nD) Deposits\nP) Payments\nR) Reports\nH) Home");
+            System.out.println(
+                    "A) All\n" + "D) Deposits\nP) Payments\nR) Reports\nH) Home");
 
             String input = scanner.nextLine().trim().toUpperCase();
 
-            switch (input) {
+            switch (input) { // fish
 
                 case "A" -> printTransactions(all);
-
                 case "D" -> printTransactions(all.stream().filter(t -> t.getAmount() > 0).collect(Collectors.toList()));
-
                 case "P" -> printTransactions(all.stream().filter(t -> t.getAmount() < 0).collect(Collectors.toList()));
-
-                //case "R" -> showReports(all);
-
+                case "R" -> showReports(all);
                 case "H" -> {
                     return; }
 
@@ -119,7 +121,7 @@ public class AccountingApp {
         }
     }
 
-    private static void printTransactions(List<Transaction> list) { //just prints list of transactions toString
+    private static void printTransactions(List<Transaction> list) {
 
         if (list.isEmpty()) {
             System.out.println("No transactions found.");
@@ -133,6 +135,46 @@ public class AccountingApp {
 
     private static void showReports(List<Transaction> list) {
 
+        System.out.println("\nReports");
+
+        while (true) {
+
+        System.out.println("1) Month to Date\n2) Previous Month\n3) Year to Date\n4) Previous Year\n5) Search by Vendor\n0) Back");
+
+        String input = scanner.nextLine();
+
+        LocalDate now = LocalDate.now();
+
+        switch (input) {
+
+            case "1" ->
+                    printTransactions(list.stream().filter(t -> t.getDate().getMonth() == now.getMonth() && t.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
+
+            case "2" -> {
+
+                LocalDate prevMonth = now.minusMonths(1);
+
+                printTransactions(list.stream().filter(t -> t.getDate().getMonth() == prevMonth.getMonth() && t.getDate().getYear() == prevMonth.getYear()).collect(Collectors.toList()));
+            }
+            case "3" -> printTransactions(list.stream().filter(t -> t.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
+
+            case "4" -> printTransactions(list.stream().filter(t -> t.getDate().getYear() == now.getYear() - 1).collect(Collectors.toList()));
+
+            case "5" -> {
+
+                System.out.print("Vendor name: ");
+
+                String vendor = scanner.nextLine().trim();
+
+                printTransactions(list.stream().filter(t -> t.getVendor().equalsIgnoreCase(vendor)).collect(Collectors.toList()));
+            }
+            case "0" -> {
+                return;
+            }
+
+            default -> System.out.println("Invalid report option.");
+        }
+        }
     }
     }
 
