@@ -24,6 +24,11 @@ public class AccountingApp {
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
+            if (choice.isEmpty()) {
+                System.out.println("Please input one of the options");
+                continue;
+            }
+
             switch (choice) { //dont need break; with arrows - Default is an easier way to keep from user entering something wrong in a while loop to me to keep it user proof
 
                 case "D" -> addTransaction(true);
@@ -113,6 +118,11 @@ public class AccountingApp {
 
             String input = scanner.nextLine().trim().toUpperCase();
 
+            if (input.isEmpty()) {
+                System.out.println("Please input one of the options");
+                continue;
+            }
+
             switch (input) { // fish
 
                 case "A" -> printTransactions(all);
@@ -151,7 +161,12 @@ public class AccountingApp {
                     5) Search by Vendor
                     0) Back""");
 
-        String input = scanner.nextLine();
+        String input = scanner.nextLine().trim();
+
+        if (input.isEmpty()) {
+            System.out.println("Please input one of the options");
+            continue;
+        }
         LocalDate now = LocalDate.now();
 
         switch (input) {
