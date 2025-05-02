@@ -16,11 +16,11 @@ public class AccountingApp {
 
             System.out.println("\n Home Screen ");
 
-            System.out.println( //paulo mentioned readability, adjusted to seperate the line to 4 lines for readability
-                    "D) Add Deposit\n" +
-                    "P) Make Payment\n" +
-                    "L) Go to Ledger\n" +
-                    "X) Close Program");
+            System.out.println(""" 
+                    D) Add Deposit
+                    P) Make Payment
+                    L) Go to Ledger
+                    X) Close Program""");//paulo mentioned readability, turned one line to 4
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
@@ -97,10 +97,7 @@ public class AccountingApp {
 
         List<Transaction> all = readTransactions();
 
-        all.sort(Comparator
-                .comparing(Transaction::getDate)
-                .thenComparing(Transaction::getTime)
-                .reversed());
+        all.sort(Comparator.comparing(Transaction::getDate).thenComparing(Transaction::getTime).reversed());
 
         while (true) {
 
@@ -145,13 +142,14 @@ public class AccountingApp {
 
         while (true) {
             System.out.println("\nReports");
-            System.out.println(
-                    "1) Month to Date\n" +
-                    "2) Previous Month\n" +
-                    "3) Year to Date\n" +
-                    "4) Previous Year\n" +
-                    "5) Search by Vendor\n" +
-                    "0) Back\n");
+
+            System.out.println("""
+                    1) Month to Date
+                    2) Previous Month
+                    3) Year to Date
+                    4) Previous Year
+                    5) Search by Vendor
+                    0) Back""");
 
         String input = scanner.nextLine();
         LocalDate now = LocalDate.now();
@@ -162,8 +160,8 @@ public class AccountingApp {
                     printTransactions(list.stream().filter(transaction -> transaction.getDate().getMonth() == now.getMonth() && transaction.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
 
             case "2" -> {
-                LocalDate prevMonth = now.minusMonths(1);
-                printTransactions(list.stream().filter(t -> t.getDate().getMonth() == prevMonth.getMonth() && t.getDate().getYear() == prevMonth.getYear()).collect(Collectors.toList()));
+                    LocalDate prevMonth = now.minusMonths(1);
+                    printTransactions(list.stream().filter(t -> t.getDate().getMonth() == prevMonth.getMonth() && t.getDate().getYear() == prevMonth.getYear()).collect(Collectors.toList()));
             }
             case "3" ->
                     printTransactions(list.stream().filter(t -> t.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
@@ -172,10 +170,9 @@ public class AccountingApp {
                     printTransactions(list.stream().filter(t -> t.getDate().getYear() == now.getYear() - 1).collect(Collectors.toList()));
 
             case "5" -> {
-
-                System.out.print("Vendor: ");
-                String vendor = scanner.nextLine().trim();
-                printTransactions(list.stream().filter(t -> t.getVendor().equalsIgnoreCase(vendor)).collect(Collectors.toList()));
+                    System.out.print("Vendor: ");
+                    String vendor = scanner.nextLine().trim();
+                    printTransactions(list.stream().filter(t -> t.getVendor().equalsIgnoreCase(vendor)).collect(Collectors.toList()));
             }
             case "0" -> {
                 return;
