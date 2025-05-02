@@ -83,7 +83,7 @@ public class AccountingApp {
 
             for (String line : Files.readAllLines(Paths.get(FILE))) {
 
-                String[] parts = line.split(",");
+                String[] parts = line.split("\\|");
 
                 list.add(new Transaction(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], parts[3], Double.parseDouble(parts[4])));
             }

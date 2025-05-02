@@ -4,7 +4,7 @@ import java.time.LocalTime;
 
 
 public class Transaction {
-    
+
     private final LocalDate date;
     private final LocalTime time;
     private final String description;
@@ -36,7 +36,7 @@ public class Transaction {
         return amount; }
 
     public String toCSV() {
-        return date + "," + time + "," + description + "," + vendor + "," + amount;
+        return date + "|" + time + "|" + description + "|" + vendor + "|" + amount;
     }
 
     public String toString() {
