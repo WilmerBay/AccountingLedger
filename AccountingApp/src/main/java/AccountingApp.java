@@ -20,7 +20,7 @@ public class AccountingApp {
                     D) Add Deposit
                     P) Make Payment
                     L) Go to Ledger
-                    X) Close Program""");//paulo mentioned readability, turned one line to 4
+                    X) Close Program"""); //paulo mentioned readability, turned one line to 4
 
             String choice = scanner.nextLine().trim().toUpperCase();
 
@@ -168,16 +168,16 @@ public class AccountingApp {
             continue;
         }
         LocalDate now = LocalDate.now();
+        LocalDate prevMonth = now.minusMonths(1);
 
         switch (input) {
 
             case "1" ->
                     printTransactions(list.stream().filter(transaction -> transaction.getDate().getMonth() == now.getMonth() && transaction.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
 
-            case "2" -> {
-                    LocalDate prevMonth = now.minusMonths(1);
+            case "2" ->
                     printTransactions(list.stream().filter(t -> t.getDate().getMonth() == prevMonth.getMonth() && t.getDate().getYear() == prevMonth.getYear()).collect(Collectors.toList()));
-            }
+
             case "3" ->
                     printTransactions(list.stream().filter(t -> t.getDate().getYear() == now.getYear()).collect(Collectors.toList()));
 
